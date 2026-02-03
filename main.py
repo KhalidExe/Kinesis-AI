@@ -11,7 +11,7 @@ class KinesisAI:
                 break
             
             # Flip the frame for a mirror effect
-            frame = cv2.flip(frame, 1)qqqqqq
+            frame = cv2.flip(frame, 1)
 
             cv2.imshow("Kinesis-AI v0.1", frame)
             
