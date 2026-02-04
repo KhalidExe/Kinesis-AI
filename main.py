@@ -26,25 +26,29 @@ class KinesisAI:
             h, w, c = frame.shape
 
             if results.multi_hand_landmarks:
-                for hand_lms in results.multi_hand_landmarks:
+                # Loop through both landmarks and handedness (Label)
+                for idx, hand_lms in enumerate(results.multi_hand_landmarks):
+                    # Get Hand Label (Right/Left)
+                    lbl = results.multi_handedness[idx].classification[0].label
+                    
                     # Draw Skeleton
                     self.mp_draw.draw_landmarks(frame, hand_lms, self.mp_hands.HAND_CONNECTIONS)
 
-                    # Get Coordinates for Thumb (4) and Index (8)
+                    # Get Coordinates
                     x1, y1 = int(hand_lms.landmark[4].x * w), int(hand_lms.landmark[4].y * h)
                     x2, y2 = int(hand_lms.landmark[8].x * w), int(hand_lms.landmark[8].y * h)
-                    
-                    # Draw Interaction Points
-                    cv2.circle(frame, (x1, y1), 10, (255, 0, 255), cv2.FILLED) # Thumb
-                    cv2.circle(frame, (x2, y2), 10, (255, 0, 255), cv2.FILLED) # Index
-                    cv2.line(frame, (x1, y1), (x2, y2), (255, 0, 255), 3)      # Line
-                    
-                    # Calculate Center & Distance
                     cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+                    
+                    # Display Hand Type (Right/Left)
+                    cv2.putText(frame, lbl, (x1, y1 - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+
+                    # Draw Interaction Points
+                    cv2.circle(frame, (x1, y1), 10, (255, 0, 255), cv2.FILLED)
+                    cv2.circle(frame, (x2, y2), 10, (255, 0, 255), cv2.FILLED)
+                    cv2.line(frame, (x1, y1), (x2, y2), (255, 0, 255), 3)
                     cv2.circle(frame, (cx, cy), 10, (255, 0, 255), cv2.FILLED)
                     
                     length = math.hypot(x2 - x1, y2 - y1)
-                    # Visual feedback for "Click"
                     if length < 50:
                         cv2.circle(frame, (cx, cy), 10, (0, 255, 0), cv2.FILLED)
 
