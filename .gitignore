@@ -1,0 +1,5 @@
+# Python ignore
+venv/
+__pycache__/
+*.pyc
+.DS_Store
