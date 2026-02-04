@@ -1,6 +1,6 @@
 opencv-python
 mediapipe==0.10.9
-pycaw
+pycaw==20230407
 comtypes
 numpy
 sounddevice
