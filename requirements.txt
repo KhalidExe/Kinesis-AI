@@ -4,3 +4,4 @@ pycaw==20230407
 comtypes
 numpy
 sounddevice
+pyautogui
